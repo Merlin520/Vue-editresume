@@ -25,7 +25,7 @@ ul,ol {
 }
 
 body {
-    font-size: 18px;
+    font-size: 14px;
 }
 
 button {
@@ -42,7 +42,7 @@ button {
 
 .page > aside {
     border: 1px solid red;
-    width: 200px;
+    width: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -63,9 +63,47 @@ button {
 }
 
 .button {
-    padding: 4px 10px;
+    padding: 2px 8px;
 }
 .page > main {
     border: 1px solid green;
     flex-grow: 1;
 }
+
+.resume {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.resume > section {
+    margin: 50px 0;
+}
+
+.resume > section > h1 {
+    text-align: center;
+    margin: 20px;
+}
+
+.resume > section > h2 {
+    text-align: center;
+    margin: 20px;
+}
+
+.resume .profile {
+    text-align: center;
+}
+
+.resume .skills > ul {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.resume .skills > ul > li {
+    width: 50%;
+    border: 1px solid red;
+}
+
+
+
+
+
