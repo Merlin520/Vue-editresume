@@ -7,11 +7,11 @@
     box-sizing: border-box;
 }
 
-*::before {
+* ::before {
     box-sizing: border-box;
 }
 
-*::after {
+* ::after {
     box-sizing: border-box;
 }
 
@@ -31,6 +31,7 @@ body {
 button {
     font: inherit;
 }
+
 @media (min-width:500px){
     .page {
         height: 100vh;
@@ -41,12 +42,14 @@ button {
 
 
 .page > aside {
-    border: 1px solid red;
+    border-right: 1px solid #ddd;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
     width: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     text-align: center;
+    flex-shrink: 0;
 }
 
 .page > aside > .upper {
@@ -66,8 +69,9 @@ button {
     padding: 2px 8px;
 }
 .page > main {
-    border: 1px solid green;
-    flex-grow: 1;
+    
+    flex-grow: 1;/*固定右边，大小不变*/
+    overflow: auto;
 }
 
 .resume {
@@ -96,14 +100,42 @@ button {
 .resume .skills > ul {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .resume .skills > ul > li {
-    width: 50%;
-    border: 1px solid red;
+    width: 48%;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    padding: 10px;
 }
 
+.resume .projects {
 
+}
 
+.resume .projects > ol {
 
+}
 
+.resume .projects > ol > li {
+    border: 1px solid #ddd;
+    margin: 30px;
+    padding: 10px;
+
+}
+
+.resume .projects header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.resume .projects header .name {
+    margin-right: 2em;
+}
+
+.resume .projects header .start {
+    display: flex;
+}
