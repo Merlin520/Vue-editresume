@@ -32,8 +32,12 @@
         <main>
             <div class="resume">
                 <section class="profile">
-                    <h1 contenteditable="true">{{resume.name}}</h1>
-                    <h1 >{{resume.name}}</h1>
+                    <span>
+                        <editable-span  v-bind:value="resume.name"></editable-span>
+                        <editable-span v-bind:value="`字符串`"></editable-span>
+
+                    </span>
+
                     <p>应聘职位：{{resume.jobTitle}}</p>
                     <p class="profile">
                         {{resume.birthday}}|{{resume.gender}}|{{resume.email}}|{{resume.phone}}
@@ -135,25 +139,11 @@
     </div>
 
 <script src="../vendors/av-min.js"></script>
-<script src="./js/av.js"></script>
+<!-- <script src="./js/av.js"></script> 不调换顺序无法引入js-->
 <script src="../vendors/vue.min.js"></script>
-<script>
+<script src="./js/av.js"></script>
 
-  var app = new Vue({
-    el: '#app',
-    data: {
-      resume:{
-          name:'姓名',
-          gender:'男',
-          birthday:'19930121',
-          jobTitle:'前端开发',
-          phone:'12312312541234',
-          email:'23124@12313.com'
-      }
-    }
-  });
 
-</script>
 
 </body>
 </html>
