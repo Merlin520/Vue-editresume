@@ -5,6 +5,7 @@
     <title>简历编辑器</title>
     <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="./css/resume.css">
+    <link rel="stylesheet" href="css/editable-span.css">
 </head>
 <body>
     <div class="page" id="app">
@@ -32,15 +33,21 @@
         <main>
             <div class="resume">
                 <section class="profile">
-                    <span>
-                        <editable-span  v-bind:value="resume.name"></editable-span>
-                        <editable-span v-bind:value="`字符串`"></editable-span>
+                    <h1>
+                        <editable-span  v-bind:value="resume.name" v-on:edit="onEdit('name',$event)"></editable-span>
+                    </h1>
 
-                    </span>
-
-                    <p>应聘职位：{{resume.jobTitle}}</p>
+                    <p>应聘职位：
+                        <editable-span  v-bind:value="resume.jobTitle" v-on:edit="onEdit('jobTitle',$event)"></editable-span>
+                    </p>
                     <p class="profile">
-                        {{resume.birthday}}|{{resume.gender}}|{{resume.email}}|{{resume.phone}}
+                        <editable-span  v-bind:value="resume.birthday" v-on:edit="onEdit('birthday',$event)"></editable-span>
+                        |
+                        <editable-span  v-bind:value="resume.gender" v-on:edit="onEdit('gender',$event)"></editable-span>
+                        |
+                        <editable-span  v-bind:value="resume.email" v-on:edit="onEdit('email',$event)"></editable-span>
+                        |
+                        <editable-span  v-bind:value="resume.phone" v-on:edit="onEdit('phone',$event)"></editable-span>
                     </p>
                 </section>
                 <section class="skills">
@@ -142,8 +149,8 @@
 <!-- <script src="./js/av.js"></script> 不调换顺序无法引入js-->
 <script src="../vendors/vue.min.js"></script>
 <script src="./js/av.js"></script>
-
-
+<script src="./js/editable-span.js"></script>
+<script src="./js/app.js"></script>
 
 </body>
 </html>
