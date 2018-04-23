@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="./css/resume.css">
     <link rel="stylesheet" href="css/editable-span.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
     <div class="page" id="app">
@@ -13,7 +14,7 @@
             <div class="upper">
                 <ul class="actions">
                     <li>
-                        <button class="button">保存</button>   
+                        <button class="button" v-on:click="onClickSave">保存</button>
                     </li>
                     <li>
                         <button class="button">分享</button>      
@@ -32,6 +33,7 @@
         </aside>
         <main>
             <div class="resume">
+                {{resume}}
                 <section class="profile">
                     <h1>
                         <editable-span  v-bind:value="resume.name" v-on:edit="onEdit('name',$event)"></editable-span>
@@ -143,6 +145,10 @@
                 </section>
             </div>
         </main>
+
+        <div class="login">
+            登录
+        </div>
     </div>
 
 <script src="../vendors/av-min.js"></script>

@@ -1,4 +1,4 @@
-var app = new Vue({
+let app = new Vue({
 
     el: '#app',
     data: {
@@ -16,6 +16,28 @@ var app = new Vue({
     methods: {
         onEdit(key,value){
             this.resume[key] = value;
-        }
+        },
+
+        onClickSave(){
+
+            let currentUser = AV.User.current();
+            if (!currentUser) {
+                this.showLogin()
+            }
+            else {
+                this.saveResume()
+            }
+        },
+
+        showLogin(){
+
+        },
+
+        saveResume(){
+
+        },
+
     },
+
+
 });
