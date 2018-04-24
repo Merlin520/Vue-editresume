@@ -3,6 +3,8 @@ let app = new Vue({
     el: '#app',
     data: {
         editingName:false,
+        loginVisible:false,
+        signUpVisible:false,
         resume:{
             name:'姓名',
             gender:'男',
@@ -22,16 +24,13 @@ let app = new Vue({
 
             let currentUser = AV.User.current();
             if (!currentUser) {
-                this.showLogin()
+                this.loginVisible = true;
             }
             else {
                 this.saveResume()
             }
         },
 
-        showLogin(){
-
-        },
 
         saveResume(){
 
