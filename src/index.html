@@ -11,6 +11,7 @@
 </head>
 <body>
     <div class="page" id="app">
+
         <aside>
             <div class="upper">
                 <ul class="actions">
@@ -29,12 +30,12 @@
                 </ul>
             </div>
             <div class="down">
-                <button class="button" @click="onLogout">登出</button>
+                <button class="button" @click="onLogout" v-show="!!currentUser.id">登出</button>
             </div>
         </aside>
         <main>
             <div class="resume">
-
+                {{currentUser}}
                 <section class="profile">
                     <h1>
                         <editable-span  v-bind:value="resume.name" v-on:edit="onEdit('name',$event)"></editable-span>
@@ -148,6 +149,7 @@
         </main>
 
         <div v-show="loginVisible" class="login" v-cloak>
+
             <form class="form" @submit.prevent="onLogin">
                 <h2>登录</h2>
                 <button type="button" @click="loginVisible = false">关闭</button>
