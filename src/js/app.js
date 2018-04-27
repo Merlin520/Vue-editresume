@@ -6,7 +6,7 @@ let app = new Vue({
         loginVisible:false,
         signUpVisible:false,
         currentUser:{
-            id:undefined,
+            objectId:undefined,
             email:'',
         },
 
@@ -35,18 +35,28 @@ let app = new Vue({
             this.resume[key] = value;
         },
 
+        hasLogin(){
+          return !!this.currentUser.objectId
+        },
+
+
+
         onLogin(e){
 
             AV.User.logIn(this.login.email, this.login.password).then( (user) =>{
-                console.log('hi');
+
                 // this.currentUser = {
                 //     id:user.id,
                 //     email:user.attributes.email
                 // }
                 // debugger
-                this.currentUser.id=user.id;
-                this.currentUser.email=user.attributes.email;
-
+                //
+                user = user.toJSON();
+                // console.log(user);
+                // debugger;
+                this.currentUser.objectId=user.objectId;
+                this.currentUser.email=user.email;
+                this.loginVisible = false
 
 
             }, (error) =>{
@@ -76,12 +86,14 @@ let app = new Vue({
             // 设置邮箱
             user.setEmail(this.signUp.email);
             user.signUp().then( (user) => {
-                console.log(user);
-                // this.currentUser = {
-                //     id:user.id,
-                //     email:user.attributes.email
-                // }
+                alert('注册成功');
+                user = user.toJSON();
+                this.currentUser.objectId=user.objectId;
+                this.currentUser.email=user.email;
+                this.signUpVisible = false
             },  (error) => {
+                // console.dir(error);
+                alert(error.rawMessage)
             });
 
 
@@ -101,10 +113,10 @@ let app = new Vue({
 
 
         saveResume(){
-            let {id} = AV.User.current();
+            let {objectId} = AV.User.current().toJSON();
 
             // 第一个参数是 className，第二个参数是 objectId
-            let user = AV.Object.createWithoutData('User', id);
+            let user = AV.Object.createWithoutData('User', objectId);
             // 修改属性
             user.set('resume', this.resume);
             // 保存到云端
@@ -119,7 +131,8 @@ let app = new Vue({
 
 let  currentUser = AV.User.current();
 if(currentUser){
-    app.currentUser = currentUser
+    app.currentUser = currentUser.toJSON()//JSON文档
+    console.log(currentUser)
 }
 
 
