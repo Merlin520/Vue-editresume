@@ -120,8 +120,23 @@ let app = new Vue({
             // 修改属性
             user.set('resume', this.resume);
             // 保存到云端
-            user.save();
+            user.save().then(()=>{
+                alert('保存成功')
+            },()=>{
+                alert('保存失败')
+            })
         },
+
+        getResume(){
+            var query = new AV.Query('User');
+            query.get(this.currentUser.objectId).then( (user) => {
+                let resume = user.toJSON().resume;
+                this.resume = resume
+                // todo 就是 id 为 57328ca079bc44005c2472d0 的 Todo 对象实例
+            },  (error) => {
+                // 异常处理
+            });
+        }
 
     },
 
@@ -132,7 +147,7 @@ let app = new Vue({
 let  currentUser = AV.User.current();
 if(currentUser){
     app.currentUser = currentUser.toJSON()//JSON文档
-    console.log(currentUser)
+    app.getResume()
 }
 
 
