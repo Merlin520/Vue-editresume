@@ -195,13 +195,26 @@ let app = new Vue({
 
 });
 
+    //通过正则获取user_id
+    let search = location.search;
+    console.log(search);
+    let regex = /user_id=[^&]+/
+    let a = search.match(regex)
+    console.log(a);
 
-let  currentUser = AV.User.current();
-if(currentUser){
-    app.currentUser = currentUser.toJSON();//JSON文档
-    app.shareLink = location.origin + location.pathname + '?user_id = ' + app.currentUser.objectId;
-    app.getResume()
-}
+
+    let  currentUser = AV.User.current();
+    if(currentUser){
+        app.currentUser = currentUser.toJSON();//JSON文档
+        app.shareLink = location.origin + location.pathname + '?user_id = ' + app.currentUser.objectId;
+        app.getResume()
+    }
+
+
+
+
+
+
 
 
 
