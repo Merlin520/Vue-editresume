@@ -5,6 +5,7 @@ let app = new Vue({
         editingName:false,
         loginVisible:false,
         signUpVisible:false,
+        shareVisible:false,
         currentUser:{
             objectId:undefined,
             email:'',
@@ -39,7 +40,9 @@ let app = new Vue({
         signUp: {
             email:'',
             password:''
-        }
+        },
+
+        shareLink:'不知道',
     },
 
     methods: {
@@ -196,6 +199,7 @@ let app = new Vue({
 let  currentUser = AV.User.current();
 if(currentUser){
     app.currentUser = currentUser.toJSON();//JSON文档
+    app.shareLink = location.origin + location.pathname + '?user_id = ' + app.currentUser.objectId;
     app.getResume()
 }
 
