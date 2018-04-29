@@ -64,6 +64,10 @@
                                 <editable-span :value="skill.description" @edit="onEdit(`skills[${index}].description`,$event)">
                                 </editable-span>
                             </div>
+                            <span class="remove" v-if="index >= 4" @click="removeSkill(index)">x</span>
+                        </li>
+                        <li>
+                            <span @click="addSkill">添加</span>
                         </li>
                     </ul>
                 </section>

@@ -162,6 +162,14 @@ let app = new Vue({
             },  (error) => {
                 // 异常处理
             });
+        },
+
+        addSkill(){
+            this.resume.skills.push({name:'请填写技能名称',description:'请填写技能描述'})
+        },
+
+        removeSkill(index){
+            this.resume.skills.splice(index,1)
         }
 
     },
@@ -172,7 +180,7 @@ let app = new Vue({
 
 let  currentUser = AV.User.current();
 if(currentUser){
-    app.currentUser = currentUser.toJSON()//JSON文档
+    app.currentUser = currentUser.toJSON();//JSON文档
     app.getResume()
 }
 

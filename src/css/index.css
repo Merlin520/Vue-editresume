@@ -78,3 +78,11 @@ div[v-cloak]{
     overflow: auto;
 }
 
+.skills > ul > li {
+    position: relative;
+}
+.skills > ul > li .remove {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
