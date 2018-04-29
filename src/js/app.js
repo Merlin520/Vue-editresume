@@ -16,7 +16,13 @@ let app = new Vue({
             birthday:'19930121',
             jobTitle:'前端开发',
             phone:'12312312541234',
-            email:'23124@12313.com'
+            email:'23124@12313.com',
+            skills:[
+                {name:'请填写技能名称',description:'请填写技能描述'},
+                {name:'请填写技能名称',description:'请填写技能描述'},
+                {name:'请填写技能名称',description:'请填写技能描述'},
+                {name:'请填写技能名称',description:'请填写技能描述'},
+            ]
         },
 
         login: {
@@ -32,7 +38,26 @@ let app = new Vue({
 
     methods: {
         onEdit(key,value){
-            this.resume[key] = value;
+            let regex = /\[(\d+)\]/g;
+            key = key.replace(regex,(match,number)=>`.${number}`);
+            //key = skills.0.name
+            keys = key.split('.');
+            let result = this.resume;
+            for(let i = 0;i<key.length;i++){
+                if(i===keys.length-1){
+                    result[keys[i]] = value;
+                }else {
+                    result = result[keys[i]]
+                }
+                //result = this.resume
+                //keys = ['skills','0','name']
+                //i = 0  result === result['skills'] === this.resume.skills
+                //i = 1  result === result['0'] === this.resume.skills.0
+                //i = 2  result === result['name'] === this.resume.skills.0.name
+                //result === this.resume['skills']['0']['name']
+            }
+            // result = value;
+                //this.resume['skills']['0']['name'] = value
         },
 
         hasLogin(){
@@ -128,11 +153,12 @@ let app = new Vue({
         },
 
         getResume(){
-            var query = new AV.Query('User');
+            let query = new AV.Query('User');
             query.get(this.currentUser.objectId).then( (user) => {
                 let resume = user.toJSON().resume;
-                this.resume = resume
-                // todo 就是 id 为 57328ca079bc44005c2472d0 的 Todo 对象实例
+                // this.resume = resume
+                //如果右边有属性，则将其赋给左边；反之，则保留左边原始属性
+                Object.assign(this.resume,resume);
             },  (error) => {
                 // 异常处理
             });
