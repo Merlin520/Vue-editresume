@@ -1,70 +1,70 @@
-.resume {
+main.default .resume {
     max-width: 800px;
     margin: 0 auto;
 }
 
-.resume > section {
+main.default .resume > section {
     margin: 50px 0;
 }
 
-.resume > section > h1 {
+main.default .resume > section > h1 {
     text-align: center;
     margin: 20px;
 }
 
-.resume > section > h2 {
+main.default .resume > section > h2 {
     text-align: center;
     margin: 20px;
 }
 
-.resume .profile {
+main.default .resume .profile {
     text-align: center;
 }
 
-.resume .skills > ul {
+main.default .resume .skills > ul {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
 
-.resume .skills > ul > li {
+main.default .resume .skills > ul > li {
     width: 48%;
     border: 1px solid #ddd;
     margin-top: 10px;
     padding: 10px;
 }
 
-.resume .projects {
+main.default .resume .projects {
 
 }
 
-.resume .projects > ol {
+main.default .resume .projects > ol {
 
 }
 
-.resume .projects > ol > li {
+main.default .resume .projects > ol > li {
     border: 1px solid #ddd;
     margin: 30px;
     padding: 10px;
 
 }
 
-.resume .projects header {
+main.default .resume .projects header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
 }
 
-.resume .projects header .name {
+main.default .resume .projects header .name {
     margin-right: 2em;
 }
 
-.resume .projects header .start {
+main.default .resume .projects header .start {
     display: flex;
 }
 
-main.dark {
-    background: greenyellow;
-    color: black;
-}
+/*main.dark {*/
+    /*background: greenyellow;*/
+    /*color: black;*/
+/*}*/
