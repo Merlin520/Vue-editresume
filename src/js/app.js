@@ -11,6 +11,12 @@ let app = new Vue({
             email:'',
         },
 
+        previewUser:{
+          objectId:undefined,
+        },
+
+        previewResume:{},
+
         resume:{
             name:'姓名',
             gender:'男',
@@ -42,8 +48,23 @@ let app = new Vue({
             password:''
         },
 
-        shareLink:'不知道',
+        shareLink: '不知道',
+        mode:'edit'//'preview'
     },
+
+        computed:{
+            displayResume(){
+                return this.mode === 'preview' ? this.previewResume : this.resume
+            }
+        },
+
+        watch:{
+        'currentUser.objectId':function(newValue,oldValue){
+             if(newValue){
+                 this.getResume(this.currentUser)
+                }
+            }
+        },
 
     methods: {
         onEdit(key,value){
@@ -58,6 +79,7 @@ let app = new Vue({
                 }else {
                     result = result[keys[i]]
                 }
+                //以下注释不可删
                 //result = this.resume
                 //keys = ['skills','0','name']
                 //i = 0  result === result['skills'] === this.resume.skills
@@ -161,13 +183,14 @@ let app = new Vue({
             })
         },
 
-        getResume(){
+        getResume(user){
             let query = new AV.Query('User');
-            query.get(this.currentUser.objectId).then( (user) => {
+            return query.get(user.objectId).then( (user) => {
                 let resume = user.toJSON().resume;
                 // this.resume = resume
                 //如果右边有属性，则将其赋给左边；反之，则保留左边原始属性
-                Object.assign(this.resume,resume);
+                // Object.assign(this.resume,resume);写死
+                return resume //返回后自行赋值
             },  (error) => {
                 // 异常处理
             });
@@ -188,32 +211,39 @@ let app = new Vue({
         removeProject(index){
             this.resume.projects.splice(index,1)
         },
-
-
-    },
-
-
+    }
 });
 
-    //通过正则获取user_id
-    let search = location.search;
-    console.log(search);
-    let regex = /user_id=[^&]+/
-    let a = search.match(regex)
-    console.log(a);
 
+        //获取当前用户
+        let  currentUser = AV.User.current();
+        if(currentUser){
+            app.currentUser = currentUser.toJSON();//JSON文档
+            app.shareLink = location.origin + location.pathname +'?user_id='+app.currentUser.objectId;//不能有空格
+            console.log('currentUser id:'+ app.currentUser.objectId);
+            app.getResume(app.currentUser).then(resume => {
+                app.resume = resume
+            })
+        }
 
-    let  currentUser = AV.User.current();
-    if(currentUser){
-        app.currentUser = currentUser.toJSON();//JSON文档
-        app.shareLink = location.origin + location.pathname + '?user_id = ' + app.currentUser.objectId;
-        app.getResume()
-    }
+        //获取预览用户id
+        let search = location.search;
+        let regex = /user_id=([^&]+)/;
+        let matches = search.match(regex);
+        let userId;
+        if(matches){
+            userId = matches[1];
+            app.mode = 'preview';
+            app.getResume({objectId:userId}).then(resume => {
+                app.previewResume = resume
+            })
+        }
 
+        if(userId){
+            app.getResume({objectId:userId})
+        }else {
 
-
-
-
+        }
 
 
 
