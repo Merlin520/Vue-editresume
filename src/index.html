@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <title>简历编辑器</title>
+
     <link rel="stylesheet" href="./css/index.css">
-    <link rel="stylesheet" href="./css/resume.css">
+    <link rel="stylesheet" href="css/themes/default.css">
+    <link rel="stylesheet" href="css/themes/dark.css">
     <link rel="stylesheet" href="css/editable-span.css">
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/signUp.css">
     <link rel="stylesheet" href="css/share.css">
-    <link rel="stylesheet" href="css/print.css" media="print">
     <link rel="stylesheet" href="css/skinPicker.css">
-    <link rel="stylesheet" href="css/themes/default.css">
-    <link rel="stylesheet" href="css/themes/dark.css">
+    <link rel="stylesheet" href="css/print.css" media="print">
+
 
 </head>
 <body class="default">
@@ -25,7 +27,7 @@
                         <button class="button" v-on:click="onClickSave">保存</button>
                     </li>
                     <li>
-                        <button class="button" @click="shareVisible = true">分享</button>
+                        <button class="button" @click="onShare">分享</button>
                     </li>
                     <li>
                         <button class="button" @click="print">打印</button>
@@ -113,69 +115,80 @@
             </div>
         </main>
 
-        <div v-show="loginVisible" class="login" v-cloak>
+        <!--<div v-show="loginVisible" class="login" v-cloak>-->
 
-            <form class="form" @submit.prevent="onLogin">
-                <h2>登录</h2>
-                <button type="button" @click="loginVisible = false">关闭</button>
-                <div class="row">
-                    <label>邮箱</label>
-                    <input type="text" v-model="login.email">
-                </div>
-                <div class="row">
-                    <label>密码</label>
-                    <input type="password" v-model="login.password">
-                </div>
-                <div class="actions">
-                    <button type="submit">提交</button>
-                    <a href="#" @click="signUpVisible = true;loginVisible = false">注册</a>
-                </div>
-            </form>
-        </div>
+            <!--<form class="form" @submit.prevent="onLogin">-->
+                <!--<h2>登录</h2>-->
+                <!--<button type="button" @click="loginVisible = false">关闭</button>-->
+                <!--<div class="row">-->
+                    <!--<label>邮箱</label>-->
+                    <!--<input type="text" v-model="login.email">-->
+                <!--</div>-->
+                <!--<div class="row">-->
+                    <!--<label>密码</label>-->
+                    <!--<input type="password" v-model="login.password">-->
+                <!--</div>-->
+                <!--<div class="actions">-->
+                    <!--<button type="submit">提交</button>-->
+                    <!--<a href="#" @click="signUpVisible = true;loginVisible = false">注册</a>-->
+                <!--</div>-->
+            <!--</form>-->
+        <!--</div>-->
 
-        <div v-show="signUpVisible" class="signUp" v-cloak>
-            <form class="form" @submit.prevent="onSignUp">
-                <h2>注册</h2>
-                <button  type="button" @click="loginVisible = false">关闭</button>
-                <div class="row">
-                    <label>邮箱</label>
-                    <input type="text" v-model="signUp.email">
-                </div>
-                <div class="row">
-                    <label>密码</label>
-                    <input type="password" v-model="signUp.password">
-                </div>
-                <div class="actions">
-                    <button type="submit">提交</button>
-                    <a href="#" @click="signUpVisible = false;loginVisible = true">登录</a>
-                </div>
-            </form>
-        </div>
-        <div v-show="shareVisible" class="share" v-cloak>
-            <h2>
-                请将下面链接分享给面试官
-            </h2>
-            <div>
-                <textarea readonly>{{shareLink}}</textarea>
-            </div>
-        </div>
+        <!--<div v-show="signUpVisible" class="signUp" v-cloak>-->
+            <!--<form class="form" @submit.prevent="onSignUp">-->
+                <!--<h2>注册</h2>-->
+                <!--<button  type="button" @click="loginVisible = false">关闭</button>-->
+                <!--<div class="row">-->
+                    <!--<label>邮箱</label>-->
+                    <!--<input type="text" v-model="signUp.email">-->
+                <!--</div>-->
+                <!--<div class="row">-->
+                    <!--<label>密码</label>-->
+                    <!--<input type="password" v-model="signUp.password">-->
+                <!--</div>-->
+                <!--<div class="actions">-->
+                    <!--<button type="submit">提交</button>-->
+                    <!--<a href="#" @click="signUpVisible = false;loginVisible = true">登录</a>-->
+                <!--</div>-->
+            <!--</form>-->
+        <!--</div>-->
+
+        <!--<div v-show="shareVisible" class="share" v-cloak>-->
+            <!--<h2>-->
+                <!--请将下面链接分享给面试官-->
+            <!--</h2>-->
+            <!--<div>-->
+                <!--<textarea readonly>{{shareLink}}</textarea>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <login v-show="loginVisible" @close="loginVisible=false" @login="onLogin"></login>
+        <share v-bind:share-link="shareLink" v-show="shareVisible"></share>
+        <sign-up v-show="signUpVisible"></sign-up>
+        <skin-picker v-show="skinPickerVisible"></skin-picker>
+
         <button class="exitPreview" @click="mode = 'edit'" v-if="mode === 'preview'">退出预览</button>
         <!--注意此处是= ，== 或===无效-->
-        <div v-show="skinPickerVisible" class="skinPicker">
-            <button @click="setTheme('default')">默认</button>
-            <button @click="setTheme('dark')">暗黑</button>
-        </div>
+        <!--<div v-show="skinPickerVisible" class="skinPicker">-->
+            <!--<button @click="setTheme('default')">默认</button>-->
+            <!--<button @click="setTheme('dark')">暗黑</button>-->
+        <!--</div>-->
     </div>
 
 
 
 
-<script src="../vendors/av-min.js"></script>
-<!-- <script src="./js/av.js"></script> 不调换顺序无法引入js-->
-<script src="../vendors/vue.min.js"></script>
-<script src="./js/av.js"></script>
-<script src="./js/editable-span.js"></script>
-<script src="./js/app.js"></script>
+        <script src="../vendors/av-min.js"></script>
+        <!-- <script src="./js/av.js"></script> 不调换顺序无法引入js-->
+        <script src="../vendors/vue.min.js"></script>
+        <script src="./js/av.js"></script>
+        <script src="./js/editable-span.js"></script>
+        <script src="./js/login.js"></script>
+        <script src="./js/share.js"></script>
+        <script src="./js/signUp.js"></script>
+        <script src="./js/skinPicker.js"></script>
+        <script src="./js/app.js"></script>
 
 </body>
 </html>

@@ -7,6 +7,7 @@ let app = new Vue({
         signUpVisible:false,
         shareVisible:false,
         skinPickerVisible:false,
+        shareLink:'',
         currentUser:{
             objectId:undefined,
             email:'',
@@ -39,17 +40,17 @@ let app = new Vue({
 
 
 
-        login: {
-          email:'',
-          password:''
-        },
+        // login: {
+        //   email:'',
+        //   password:''
+        // },
 
-        signUp: {
-            email:'',
-            password:''
-        },
+        // signUp: {
+        //     email:'',
+        //     password:''
+        // },
 
-        shareLink: '不知道',
+        // shareLink: '不知道',
         mode:'edit',//'preview'
 
 
@@ -64,12 +65,27 @@ let app = new Vue({
         watch:{
         'currentUser.objectId':function(newValue,oldValue){
              if(newValue){
-                 this.getResume(this.currentUser)
+                 this.getResume(this.currentUser).then((resume)=>this.resume=resume)
                 }
             }
         },
 
     methods: {
+
+        onShare(){
+          if(this.hasLogin()){
+              this.shareVisible =  true
+          }else {
+              alert('请先登录')
+          }
+        },
+
+        onLogin(user){
+          this.currentUser.objectId = user.objectId;
+          this.currentUser.email = user.email;
+          this.loginVisible = false
+        },
+
         onEdit(key,value){
             let regex = /\[(\d+)\]/g;
             key = key.replace(regex,(match,number)=>`.${number}`);
@@ -100,33 +116,33 @@ let app = new Vue({
 
 
 
-        onLogin(e){
-
-            AV.User.logIn(this.login.email, this.login.password).then( (user) =>{
-
-                // this.currentUser = {
-                //     id:user.id,
-                //     email:user.attributes.email
-                // }
-                // debugger
-                //
-                user = user.toJSON();
-                // console.log(user);
-                // debugger;
-                this.currentUser.objectId=user.objectId;
-                this.currentUser.email=user.email;
-                this.loginVisible = false
-
-
-            }, (error) =>{
-               if(error.code === 211){
-                    alert('邮箱不存在')
-               }else if(error.code === 210){
-                    alert('邮箱密码不匹配')
-               }
-
-            });
-        },
+        // onLogin(e){
+        //
+        //     AV.User.logIn(this.login.email, this.login.password).then( (user) =>{
+        //
+        //         // this.currentUser = {
+        //         //     id:user.id,
+        //         //     email:user.attributes.email
+        //         // }
+        //         // debugger
+        //         //
+        //         user = user.toJSON();
+        //         // console.log(user);
+        //         // debugger;
+        //         this.currentUser.objectId=user.objectId;
+        //         this.currentUser.email=user.email;
+        //         this.loginVisible = false
+        //
+        //
+        //     }, (error) =>{
+        //        if(error.code === 211){
+        //             alert('邮箱不存在')
+        //        }else if(error.code === 210){
+        //             alert('邮箱密码不匹配')
+        //        }
+        //
+        //     });
+        // },
 
         onLogout(e){
             AV.User.logOut();
@@ -134,29 +150,27 @@ let app = new Vue({
             window.location.reload();//刷新页面
         },
 
-        onSignUp(e){
-
-            // 新建 AVUser 对象实例
-            const user = new AV.User();
-            // 设置用户名
-            user.setUsername(this.signUp.email);
-            // 设置密码
-            user.setPassword(this.signUp.password);
-            // 设置邮箱
-            user.setEmail(this.signUp.email);
-            user.signUp().then( (user) => {
-                alert('注册成功');
-                user = user.toJSON();
-                this.currentUser.objectId=user.objectId;
-                this.currentUser.email=user.email;
-                this.signUpVisible = false
-            },  (error) => {
-                // console.dir(error);
-                alert(error.rawMessage)
-            });
-
-
-        },
+        // onSignUp(e){
+        //
+        //     // 新建 AVUser 对象实例
+        //     const user = new AV.User();
+        //     // 设置用户名
+        //     user.setUsername(this.signUp.email);
+        //     // 设置密码
+        //     user.setPassword(this.signUp.password);
+        //     // 设置邮箱
+        //     user.setEmail(this.signUp.email);
+        //     user.signUp().then( (user) => {
+        //         alert('注册成功');
+        //         user = user.toJSON();
+        //         this.currentUser.objectId=user.objectId;
+        //         this.currentUser.email=user.email;
+        //         this.signUpVisible = false
+        //     },  (error) => {
+        //         // console.dir(error);
+        //         alert(error.rawMessage)
+        //     });
+        // },
 
         onClickSave(){
 
@@ -219,9 +233,9 @@ let app = new Vue({
           window.print()
         },
 
-        setTheme(name){
-            document.body.className = name
-        }
+        // setTheme(name){
+        //     document.body.className = name
+        // }
 
     }
 });
@@ -232,7 +246,6 @@ let app = new Vue({
         if(currentUser){
             app.currentUser = currentUser.toJSON();//JSON文档
             app.shareLink = location.origin + location.pathname +'?user_id='+app.currentUser.objectId;//不能有空格
-            console.log('currentUser id:'+ app.currentUser.objectId);
             app.getResume(app.currentUser).then(resume => {
                 app.resume = resume
             })
