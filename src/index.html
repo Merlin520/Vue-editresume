@@ -20,7 +20,7 @@
 <body class="default">
     <div class="page" id="app">
 
-        <app-adide v-show="mode === 'edit'"></app-adide>
+        <app-adide v-show="mode === 'edit'" @save="onClickSave"></app-adide>
         <!--<aside v-show="mode === 'edit'">-->
             <!--<div class="upper">-->
                 <!--<ul class="actions">-->
