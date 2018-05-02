@@ -46,7 +46,7 @@ div[v-cloak]{
 
 
 .page > aside {
-    border-right: 1px solid #ddd;
+    border-right: 10px solid #ddd;
     box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
     width: 100px;
     display: flex;

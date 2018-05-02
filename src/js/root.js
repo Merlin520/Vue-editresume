@@ -1,83 +1,122 @@
-window.App = {
-    template:`
-        <div>
-             <app-adide v-show="mode === 'edit'" @save="onClickSave"></app-adide>
-             <main >
-                <resume :mode="mode" :display-resume="displayResume"></resume>
-             </main>
-             <button class="exitPreview" @click="mode = 'edit'" v-if="mode === 'preview'">退出预览</button>
-        </div>
-    `,
 
+
+
+
+const routes = [
+    { path: '/', component: window.App },
+    { path: '/login', component: window.Login },
+    { path: '/signUp', component: window.SignUp },
+]
+
+
+const router = new VueRouter({
+    routes // （缩写）相当于 routes: routes
+})
+
+
+const root = new Vue({
+    router,
     data(){
         return {
-            editingName:false,
-            loginVisible:false,
-            signUpVisible:false,
-            shareVisible:false,
-            skinPickerVisible:false,
-            shareLink:'',
             currentUser:{
-                objectId:undefined,
-                email:'',
-            },
 
-            previewUser:{
-                objectId:undefined,
-            },
-
-            previewResume:{},
-
-            resume:{
-                name:'姓名',
-                gender:'男',
-                birthday:'19930121',
-                jobTitle:'前端开发',
-                phone:'12312312541234',
-                email:'23124@12313.com',
-                skills:[
-                    {name:'请填写技能名称',description:'请填写技能描述'},
-                    {name:'请填写技能名称',description:'请填写技能描述'},
-                    {name:'请填写技能名称',description:'请填写技能描述'},
-                    {name:'请填写技能名称',description:'请填写技能描述'},
-                ],
-                projects:[
-                    {name:'请填写名称',link:'http://...',keywords:'请填写关键词',description:'请详细描述'},
-                    {name:'请填写名称',link:'http://...',keywords:'请填写关键词',description:'请详细描述'},
-                ],
-            },
-
-
-
-            // login: {
-            //   email:'',
-            //   password:''
-            // },
-
-            // signUp: {
-            //     email:'',
-            //     password:''
-            // },
-
-            // shareLink: '不知道',
-            mode:'edit',//'preview'
+            }
         }
+    }
+}).$mount('#root')
+
+
+
+
+// -------------------------
+
+/*
+let app = new Vue({
+
+    el: '#app',
+    data: {
+        editingName:false,
+        loginVisible:false,
+        signUpVisible:false,
+        shareVisible:false,
+        skinPickerVisible:false,
+        shareLink:'',
+        currentUser:{
+            objectId:undefined,
+            email:'',
+        },
+
+        previewUser:{
+          objectId:undefined,
+        },
+
+        previewResume:{},
+
+        resume:{
+            name:'姓名',
+            gender:'男',
+            birthday:'19930121',
+            jobTitle:'前端开发',
+            phone:'12312312541234',
+            email:'23124@12313.com',
+            skills:[
+                {name:'请填写技能名称',description:'请填写技能描述'},
+                {name:'请填写技能名称',description:'请填写技能描述'},
+                {name:'请填写技能名称',description:'请填写技能描述'},
+                {name:'请填写技能名称',description:'请填写技能描述'},
+            ],
+            projects:[
+                {name:'请填写名称',link:'http://...',keywords:'请填写关键词',description:'请详细描述'},
+                {name:'请填写名称',link:'http://...',keywords:'请填写关键词',description:'请详细描述'},
+            ],
+        },
+
+
+
+        // login: {
+        //   email:'',
+        //   password:''
+        // },
+
+        // signUp: {
+        //     email:'',
+        //     password:''
+        // },
+
+        // shareLink: '不知道',
+        mode:'edit',//'preview'
+
+
     },
+
+        computed:{
+            displayResume(){
+                return this.mode === 'preview' ? this.previewResume : this.resume
+            }
+        },
+
+        watch:{
+        'currentUser.objectId':function(newValue,oldValue){
+             if(newValue){
+                 this.getResume(this.currentUser).then((resume)=>this.resume=resume)
+                }
+            }
+        },
 
     methods: {
 
         onShare(){
-            if(this.hasLogin()){
-                this.shareVisible =  true
-            }else {
-                alert('请先登录')
-            }
+          if(this.hasLogin()){
+              this.shareVisible =  true
+          }else {
+              alert('请先登录')
+          }
         },
 
         onLogin(user){
-            this.currentUser.objectId = user.objectId;
-            this.currentUser.email = user.email;
-            this.loginVisible = false
+          this.currentUser.objectId = user.objectId;
+          this.currentUser.email = user.email;
+          this.loginVisible = false
         },
 
         onEdit(key,value){
@@ -101,11 +140,11 @@ window.App = {
                 //result === this.resume['skills']['0']['name']
             }
             // result = value;
-            //this.resume['skills']['0']['name'] = value
+                //this.resume['skills']['0']['name'] = value
         },
 
         hasLogin(){
-            return !!this.currentUser.objectId
+          return !!this.currentUser.objectId
         },
 
 
@@ -171,7 +210,7 @@ window.App = {
             let currentUser = AV.User.current();
 
             if (!currentUser) {
-                this.$router.push('/login')
+                this.loginVisible = true;
             }
             else {
                 this.saveResume()
@@ -224,20 +263,66 @@ window.App = {
         // },
 
         print(){
-            window.print()
+          window.print()
         },
 
         // setTheme(name){
         //     document.body.className = name
         // }
 
-    },
+    }
+});
 
-    computed:{
-        displayResume(){
-            return this.mode === 'preview' ? this.previewResume : this.resume
+
+        //获取当前用户
+        let  currentUser = AV.User.current();
+        if(currentUser){
+            app.currentUser = currentUser.toJSON();//JSON文档
+            app.shareLink = location.origin + location.pathname +'?user_id='+app.currentUser.objectId;//不能有空格
+            app.getResume(app.currentUser).then(resume => {
+                app.resume = resume
+            })
         }
-    },
-};
 
-Vue.component('app',App);
+        //获取预览用户id
+        let search = location.search;
+        let regex = /user_id=([^&]+)/;
+        let matches = search.match(regex);
+        let userId;
+        if(matches){
+            userId = matches[1];
+            app.mode = 'preview';
+            app.getResume({objectId:userId}).then(resume => {
+                app.previewResume = resume
+            })
+        }
+
+        if(userId){
+            app.getResume({objectId:userId})
+        }else {
+
+        }
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
